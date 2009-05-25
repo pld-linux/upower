@@ -2,11 +2,12 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		DeviceKit-power
 Version:	007
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	4b1159374f36e23fe7d920f934076269
+Patch0:		%{name}-unknown-state.patch
 BuildRequires:	DeviceKit-devel >= 003
 BuildRequires:	PolicyKit-devel >= 0.8
 BuildRequires:	autoconf >= 2.60
@@ -58,6 +59,7 @@ Nagłówki biblioteki DeviceKit-power.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__intltoolize}
