@@ -1,15 +1,13 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		DeviceKit-power
-Version:	007
-Release:	2
+Version:	009
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	4b1159374f36e23fe7d920f934076269
-Patch0:		%{name}-unknown-state.patch
+# Source0-md5:	535703fa7b9c323d6388b5aff28cfeeb
 BuildRequires:	DeviceKit-devel >= 003
-BuildRequires:	PolicyKit-devel >= 0.8
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-glib-devel >= 0.76
@@ -20,7 +18,9 @@ BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig
-Requires:	DeviceKit >= 003
+BuildRequires:	polkit-devel
+Requires:	DeviceKit
+Requires:	polkit
 Requires:	pm-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -59,7 +59,6 @@ Nagłówki biblioteki DeviceKit-power.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__intltoolize}
@@ -69,6 +68,7 @@ Nagłówki biblioteki DeviceKit-power.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-static \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
 
@@ -92,9 +92,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/devkit-power
 %attr(755,root,root) %{_libdir}/devkit-power-daemon
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DeviceKit.Power.conf
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/udev/rules.d/95-devkit-power-csr.rules
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/udev/rules.d/95-devkit-power-hid.rules
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/udev/rules.d/95-devkit-power-wup.rules
 %{_datadir}/PolicyKit/policy/org.freedesktop.devicekit.power.policy
 %{_datadir}/PolicyKit/policy/org.freedesktop.devicekit.power.qos.policy
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Device.xml
@@ -104,6 +101,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system-services/org.freedesktop.DeviceKit.Power.service
 %attr(755,root,root) %{_libdir}/libdevkit-power-gobject.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdevkit-power-gobject.so.1
+%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-battery-recall-*.rules
+%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-csr.rules
+%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-hid.rules
+%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-wup.rules
 %{_mandir}/man1/devkit-power.1*
 %{_mandir}/man7/DeviceKit-power.7*
 %{_mandir}/man8/devkit-power-daemon.8*
