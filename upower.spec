@@ -1,13 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		DeviceKit-power
-Version:	009
+Version:	010
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	535703fa7b9c323d6388b5aff28cfeeb
-BuildRequires:	DeviceKit-devel >= 003
+# Source0-md5:	ab6d840efd70b4dcc6008782454e5e7a
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-glib-devel >= 0.76
@@ -19,7 +18,7 @@ BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel
-Requires:	DeviceKit
+BuildRequires:	udev-glib-devel
 Requires:	polkit
 Requires:	pm-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -92,13 +91,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/devkit-power
 %attr(755,root,root) %{_libdir}/devkit-power-daemon
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DeviceKit.Power.conf
-%{_datadir}/PolicyKit/policy/org.freedesktop.devicekit.power.policy
-%{_datadir}/PolicyKit/policy/org.freedesktop.devicekit.power.qos.policy
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.QoS.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Wakeups.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.xml
 %{_datadir}/dbus-1/system-services/org.freedesktop.DeviceKit.Power.service
+%{_datadir}/polkit-1/actions/org.freedesktop.devicekit.power.policy
+%{_datadir}/polkit-1/actions/org.freedesktop.devicekit.power.qos.policy
 %attr(755,root,root) %{_libdir}/libdevkit-power-gobject.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdevkit-power-gobject.so.1
 %config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-battery-recall-*.rules
