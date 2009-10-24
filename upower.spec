@@ -1,26 +1,27 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		DeviceKit-power
-Version:	011
+Version:	012
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	555a3dd01e581c277ebe9356b7f10617
+# Source0-md5:	34b8d698658cce77050443125fa9fab4
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
+BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	gettext-devel
-BuildRequires:	glib2-devel >= 1:2.18.0
+BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	gtk-doc >= 1.3
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig
-BuildRequires:	polkit-devel
+BuildRequires:	polkit-devel >= 0.91
 BuildRequires:	udev-glib-devel
-Requires:	polkit
 Requires:	pm-utils
+Requires:	polkit >= 0.91
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -48,7 +49,8 @@ Summary:	Header files for DeviceKit-power library
 Summary(pl.UTF-8):	Nagłówki biblioteki DeviceKit-power
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.12.0
+Requires:	dbus-devel >= 1.0.0
+Requires:	glib2-devel >= 1:2.22.0
 
 %description devel
 Header files for DeviceKit library.
