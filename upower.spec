@@ -11,6 +11,7 @@ BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.76
+BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	gtk-doc >= 1.3
@@ -92,7 +93,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog HACKING NEWS README
 %attr(755,root,root) %{_bindir}/devkit-power
 %attr(755,root,root) %{_libdir}/devkit-power-daemon
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DeviceKit.Power.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.DeviceKit.Power.conf
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.QoS.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Wakeups.xml
