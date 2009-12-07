@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		DeviceKit-power
-Version:	012
+Version:	013
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	34b8d698658cce77050443125fa9fab4
+# Source0-md5:	4fd56be8344556f55f86d476adbc9ab5
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel >= 1.0.0
