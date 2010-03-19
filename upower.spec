@@ -6,7 +6,7 @@ Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	935d37f1e14b3c8a1d6dabcd9a38d3ca
+# Source0-md5:	822d7d495781c6bbed36981a7a78dd30
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
 BuildRequires:	dbus-devel >= 1.0.0
