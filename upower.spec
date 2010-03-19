@@ -1,20 +1,21 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
-Name:		DeviceKit-power
-Version:	014
+Name:		UPower
+Version:	0.9.1
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
+Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.bz2
 # Source0-md5:	935d37f1e14b3c8a1d6dabcd9a38d3ca
-BuildRequires:	autoconf >= 2.60
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.65
+BuildRequires:	automake >= 1:1.9
 BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.22.0
-BuildRequires:	gtk-doc >= 1.3
+BuildRequires:	gobject-introspection-devel >= 0.6.7
+BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
@@ -23,47 +24,53 @@ BuildRequires:	polkit-devel >= 0.91
 BuildRequires:	udev-glib-devel
 Requires:	pm-utils
 Requires:	polkit >= 0.91
+Provides:	DeviceKit-power
+Obsoletes:	DeviceKit-power
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-DeviceKit-power provides a daemon, API and command line tools for
-managing power devices attached to the system.
+UPower provides a daemon, API and command line tools for managing
+power devices attached to the system.
 
 %description -l pl.UTF-8
-DeviceKit-power dostarcza demona, API i narzędzia linii poleceń do
-zarządzania urządzeniami energii dołączonymi do systemu.
+UPower dostarcza demona, API i narzędzia linii poleceń do zarządzania
+urządzeniami energii dołączonymi do systemu.
 
 %package apidocs
-Summary:	DeviceKit-power API documentation
-Summary(pl.UTF-8):	Dokumentacja API DeviceKit-power
+Summary:	UPower API documentation
+Summary(pl.UTF-8):	Dokumentacja API UPower
 Group:		Documentation
 Requires:	gtk-doc-common
+Provides:	DeviceKit-power-apidocs
+Obsoletes:	DeviceKit-power-apidocs
 
 %description apidocs
-DeviceKit-power API documentation.
+UPower API documentation.
 
 %description apidocs -l pl.UTF-8
-Dokumentacja API DeviceKit-power.
+Dokumentacja API UPower.
 
 %package devel
-Summary:	Header files for DeviceKit-power library
-Summary(pl.UTF-8):	Nagłówki biblioteki DeviceKit-power
+Summary:	Header files for UPower library
+Summary(pl.UTF-8):	Nagłówki biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	dbus-devel >= 1.0.0
 Requires:	glib2-devel >= 1:2.22.0
+Provides:	DeviceKit-power-devel
+Obsoletes:	DeviceKit-power-devel
 
 %description devel
-Header files for DeviceKit library.
+Header files for UPower library.
 
 %description devel -l pl.UTF-8
-Nagłówki biblioteki DeviceKit-power.
+Nagłówki biblioteki UPower.
 
 %prep
 %setup -q
 
 %build
-rm acinclude.m4
+mkdir m4
 %{__gtkdocize}
 %{__intltoolize}
 %{__libtoolize}
@@ -84,42 +91,59 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%find_lang UPower
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%files
+%files -f UPower.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog HACKING NEWS README
 %attr(755,root,root) %{_bindir}/devkit-power
+%attr(755,root,root) %{_bindir}/upower
 %attr(755,root,root) %{_libdir}/devkit-power-daemon
-%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.DeviceKit.Power.conf
-%{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Device.xml
-%{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.QoS.xml
-%{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.Wakeups.xml
-%{_datadir}/dbus-1/interfaces/org.freedesktop.DeviceKit.Power.xml
-%{_datadir}/dbus-1/system-services/org.freedesktop.DeviceKit.Power.service
-%{_datadir}/polkit-1/actions/org.freedesktop.devicekit.power.policy
-%{_datadir}/polkit-1/actions/org.freedesktop.devicekit.power.qos.policy
+%attr(755,root,root) %{_libdir}/upowerd
 %attr(755,root,root) %{_libdir}/libdevkit-power-gobject.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdevkit-power-gobject.so.1
-%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-battery-recall-*.rules
-%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-csr.rules
-%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-hid.rules
-%config(noreplace) %verify(not md5 mtime size) /lib/udev/rules.d/95-devkit-power-wup.rules
-%{_mandir}/man1/devkit-power.1*
-%{_mandir}/man7/DeviceKit-power.7*
-%{_mandir}/man8/devkit-power-daemon.8*
+%attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
+%{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
+%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.UPower.conf
+%{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
+%{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
+%{_datadir}/polkit-1/actions/org.freedesktop.upower.qos.policy
+/lib/udev/rules.d/95-upower-battery-recall-dell.rules
+/lib/udev/rules.d/95-upower-battery-recall-fujitsu.rules
+/lib/udev/rules.d/95-upower-battery-recall-gateway.rules
+/lib/udev/rules.d/95-upower-battery-recall-ibm.rules
+/lib/udev/rules.d/95-upower-battery-recall-lenovo.rules
+/lib/udev/rules.d/95-upower-battery-recall-toshiba.rules
+/lib/udev/rules.d/95-upower-csr.rules
+/lib/udev/rules.d/95-upower-hid.rules
+/lib/udev/rules.d/95-upower-wup.rules
+%{_mandir}/man1/upower.1*
+%{_mandir}/man7/UPower.7*
+%{_mandir}/man8/upowerd.8*
 
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/devkit-power
+%{_gtkdocdir}/UPower
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/DeviceKit-power
 %attr(755,root,root) %{_libdir}/libdevkit-power-gobject.so
+%attr(755,root,root) %{_libdir}/libupower-glib.so
 %{_libdir}/libdevkit-power-gobject.la
+%{_libdir}/libupower-glib.la
+%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
+%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.QoS.xml
+%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Wakeups.xml
+%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.xml
+%{_datadir}/gir-1.0/UPowerGlib-1.0.gir
+%{_includedir}/DeviceKit-power
+%{_includedir}/libupower-glib
 %{_pkgconfigdir}/devkit-power-gobject.pc
+%{_pkgconfigdir}/upower-glib.pc
