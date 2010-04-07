@@ -1,12 +1,13 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		UPower
-Version:	0.9.1
+Version:	0.9.2
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	822d7d495781c6bbed36981a7a78dd30
+Source0:	http://hal.freedesktop.org/releases/upower-%{version}.tar.bz2
+# Source0-md5:	2175c37a393425ee26bdb728768bd21c
+URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
 BuildRequires:	dbus-devel >= 1.0.0
@@ -67,10 +68,9 @@ Header files for UPower library.
 Nagłówki biblioteki UPower.
 
 %prep
-%setup -q
+%setup -q -n upower-%{version}
 
 %build
-mkdir m4
 %{__gtkdocize}
 %{__intltoolize}
 %{__libtoolize}
@@ -79,6 +79,7 @@ mkdir m4
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	--disable-static \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
