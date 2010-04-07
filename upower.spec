@@ -5,7 +5,7 @@ Version:	0.9.2
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://hal.freedesktop.org/releases/upower-%{version}.tar.bz2
+Source0:	http://upower.freedesktop.org/releases/upower-%{version}.tar.bz2
 # Source0-md5:	2175c37a393425ee26bdb728768bd21c
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
