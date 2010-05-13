@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		UPower
-Version:	0.9.2
+Version:	0.9.4
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/upower-%{version}.tar.bz2
-# Source0-md5:	2175c37a393425ee26bdb728768bd21c
+# Source0-md5:	da93329b0938a64ad55a26aa8ee9c807
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
@@ -92,7 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%find_lang UPower
+%find_lang upower
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -100,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%files -f UPower.lang
+%files -f upower.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog HACKING NEWS README
 %attr(755,root,root) %{_bindir}/devkit-power
@@ -113,6 +113,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
 %{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.UPower.conf
+%dir %{_sysconfdir}/UPower
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/UPower/UPower.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.qos.policy
