@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		UPower
-Version:	0.9.4
-Release:	2
+Version:	0.9.5
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/upower-%{version}.tar.bz2
-# Source0-md5:	da93329b0938a64ad55a26aa8ee9c807
+# Source0-md5:	1c0e5f45345c17fc945dfb365847b587
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
@@ -18,6 +18,7 @@ BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	gobject-introspection-devel >= 0.6.7
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	intltool >= 0.40.0
+BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig
@@ -130,6 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/upower.1*
 %{_mandir}/man7/UPower.7*
 %{_mandir}/man8/upowerd.8*
+%dir /var/lib/upower
 
 %files apidocs
 %defattr(644,root,root,755)
