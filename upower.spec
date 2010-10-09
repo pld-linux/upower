@@ -1,12 +1,13 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		UPower
-Version:	0.9.5
+Version:	0.9.6
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/upower-%{version}.tar.bz2
-# Source0-md5:	1c0e5f45345c17fc945dfb365847b587
+# Source0-md5:	9c41e4973fdd6e9b491d1b829a9a35db
+Patch0:		%{name}-gobject-introspection.patch
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
@@ -22,10 +23,10 @@ BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libtool
 BuildRequires:	libusb-compat-devel
 BuildRequires:	pkgconfig
-BuildRequires:	polkit-devel >= 0.91
+BuildRequires:	polkit-devel >= 0.97
 BuildRequires:	udev-glib-devel
 Requires:	pm-utils
-Requires:	polkit >= 0.91
+Requires:	polkit >= 0.97
 Provides:	DeviceKit-power
 Obsoletes:	DeviceKit-power
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -70,6 +71,7 @@ Nagłówki biblioteki UPower.
 
 %prep
 %setup -q -n upower-%{version}
+%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -108,8 +110,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/upower
 %attr(755,root,root) %{_libdir}/devkit-power-daemon
 %attr(755,root,root) %{_libdir}/upowerd
-%attr(755,root,root) %{_libdir}/libdevkit-power-gobject.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libdevkit-power-gobject.so.1
 %attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
 %{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
@@ -139,16 +139,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libdevkit-power-gobject.so
 %attr(755,root,root) %{_libdir}/libupower-glib.so
-%{_libdir}/libdevkit-power-gobject.la
 %{_libdir}/libupower-glib.la
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.QoS.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Wakeups.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.xml
 %{_datadir}/gir-1.0/UPowerGlib-1.0.gir
-%{_includedir}/DeviceKit-power
 %{_includedir}/libupower-glib
-%{_pkgconfigdir}/devkit-power-gobject.pc
 %{_pkgconfigdir}/upower-glib.pc
