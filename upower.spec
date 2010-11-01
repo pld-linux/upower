@@ -1,13 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		UPower
-Version:	0.9.6
+Version:	0.9.7
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/upower-%{version}.tar.bz2
-# Source0-md5:	9c41e4973fdd6e9b491d1b829a9a35db
-Patch0:		%{name}-gobject-introspection.patch
+# Source0-md5:	d300a4bb4131cb88c9e06abe888f379f
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
@@ -16,7 +15,7 @@ BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.22.0
-BuildRequires:	gobject-introspection-devel >= 0.6.7
+BuildRequires:	gobject-introspection-devel >= 0.9.8
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libimobiledevice-devel >= 0.9.7
@@ -71,7 +70,6 @@ Nagłówki biblioteki UPower.
 
 %prep
 %setup -q -n upower-%{version}
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -142,6 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libupower-glib.so
 %{_libdir}/libupower-glib.la
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
+%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.QoS.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Wakeups.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.xml
