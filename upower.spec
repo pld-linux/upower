@@ -1,11 +1,11 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
-Name:		UPower
+Name:		upower
 Version:	0.9.8
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://upower.freedesktop.org/releases/upower-%{version}.tar.bz2
+Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.bz2
 # Source0-md5:	cf10a756a93495e6076fecf1ac9d829b
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
@@ -27,15 +27,17 @@ BuildRequires:	udev-glib-devel
 Requires:	pm-utils
 Requires:	polkit >= 0.97
 Provides:	DeviceKit-power
+Provides:	UPower
 Obsoletes:	DeviceKit-power
+Obsoletes:	UPower
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-UPower provides a daemon, API and command line tools for managing
+upower provides a daemon, API and command line tools for managing
 power devices attached to the system.
 
 %description -l pl.UTF-8
-UPower dostarcza demona, API i narzędzia linii poleceń do zarządzania
+ipower dostarcza demona, API i narzędzia linii poleceń do zarządzania
 urządzeniami energii dołączonymi do systemu.
 
 %package apidocs
@@ -44,7 +46,9 @@ Summary(pl.UTF-8):	Dokumentacja API UPower
 Group:		Documentation
 Requires:	gtk-doc-common
 Provides:	DeviceKit-power-apidocs
+Provides:	UPower-apidocs
 Obsoletes:	DeviceKit-power-apidocs
+Obsoletes:	UPower-apidocs
 
 %description apidocs
 UPower API documentation.
@@ -60,7 +64,9 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	dbus-devel >= 1.0.0
 Requires:	glib2-devel >= 1:2.22.0
 Provides:	DeviceKit-power-devel
+Provides:	UPower-devel
 Obsoletes:	DeviceKit-power-devel
+Obsoletes:	UPower-devel
 
 %description devel
 Header files for UPower library.
@@ -69,7 +75,7 @@ Header files for UPower library.
 Nagłówki biblioteki UPower.
 
 %prep
-%setup -q -n upower-%{version}
+%setup -q
 
 %build
 %{__gtkdocize}
