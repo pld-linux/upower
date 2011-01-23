@@ -20,7 +20,7 @@ BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libtool
-BuildRequires:	libusb-compat-devel
+BuildRequires:	libusb-devel
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel >= 0.97
 BuildRequires:	udev-glib-devel
@@ -37,7 +37,7 @@ upower provides a daemon, API and command line tools for managing
 power devices attached to the system.
 
 %description -l pl.UTF-8
-ipower dostarcza demona, API i narzędzia linii poleceń do zarządzania
+upower dostarcza demona, API i narzędzia linii poleceń do zarządzania
 urządzeniami energii dołączonymi do systemu.
 
 %package apidocs
