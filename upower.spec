@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.9.9
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.bz2
@@ -28,7 +28,7 @@ Requires:	pm-utils
 Requires:	polkit >= 0.97
 Provides:	DeviceKit-power = %{version}-%{release}
 Provides:	UPower = %{version}-%{release}
-Obsoletes:	DeviceKit-power < %{version}-%{release}
+Obsoletes:	DeviceKit-power < 0.15
 Obsoletes:	UPower < %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
