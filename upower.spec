@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.9.8
-Release:	4
+Version:	0.9.9
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	cf10a756a93495e6076fecf1ac9d829b
+# Source0-md5:	f92c2443ce09300992c20bee958f5370
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
@@ -110,9 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f upower.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog HACKING NEWS README
-%attr(755,root,root) %{_bindir}/devkit-power
 %attr(755,root,root) %{_bindir}/upower
-%attr(755,root,root) %{_libdir}/devkit-power-daemon
 %attr(755,root,root) %{_libdir}/upowerd
 %attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
