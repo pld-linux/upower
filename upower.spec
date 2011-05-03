@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.9.9
-Release:	3
+Version:	0.9.10
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	f92c2443ce09300992c20bee958f5370
+# Source0-md5:	8f1fb798f2ae754f25f00da7bc9e2ba3
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.9
@@ -15,7 +15,7 @@ BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.22.0
-BuildRequires:	gobject-introspection-devel >= 0.9.8
+BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.9
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libimobiledevice-devel >= 0.9.7
@@ -23,7 +23,7 @@ BuildRequires:	libtool
 BuildRequires:	libusb-devel
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel >= 0.97
-BuildRequires:	udev-glib-devel
+BuildRequires:	udev-glib-devel >= 147
 Requires:	pm-utils
 Requires:	polkit >= 0.97
 Provides:	DeviceKit-power = %{version}-%{release}
