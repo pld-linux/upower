@@ -109,7 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f upower.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog HACKING NEWS README
+%doc AUTHORS HACKING NEWS README
 %attr(755,root,root) %{_bindir}/upower
 %attr(755,root,root) %{_libdir}/upowerd
 %attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
