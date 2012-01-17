@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.9.14
+Version:	0.9.15
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	18803f82102d56aac90949d1e4251645
+# Source0-md5:	9503a853e894630e023ee244d295fd27
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
