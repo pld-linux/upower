@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.9.16
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
@@ -85,7 +85,8 @@ Nagłówki biblioteki UPower.
 	--disable-silent-rules \
 	--disable-static \
 	--enable-gtk-doc \
-	--with-html-dir=%{_gtkdocdir}
+	--with-html-dir=%{_gtkdocdir} \
+	--with-systemdsystemunitdir=%{systemdunitdir}
 
 %{__make}
 
@@ -117,6 +118,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.qos.policy
+%{systemdunitdir}/upower.service
 /lib/udev/rules.d/95-upower-battery-recall-dell.rules
 /lib/udev/rules.d/95-upower-battery-recall-fujitsu.rules
 /lib/udev/rules.d/95-upower-battery-recall-gateway.rules
