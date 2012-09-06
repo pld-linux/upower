@@ -1,30 +1,31 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.9.17
+Version:	0.9.18
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	9ef7fc8ec438542f014f3a34552822aa
+# Source0-md5:	bfaaa1e7f8479fca5594406b3c36dff9
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-devel >= 0.17
 BuildRequires:	glib2-devel >= 1:2.22.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libimobiledevice-devel >= 0.9.7
+BuildRequires:	libplist-devel >= 0.12
 BuildRequires:	libtool
-BuildRequires:	libusb-devel
+BuildRequires:	libusb-devel >= 1.0.0
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel >= 0.97
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	udev-glib-devel >= 147
+BuildRequires:	udev-glib-devel >= 1:147
 BuildRequires:	xz
 Requires:	pm-utils
 Requires:	polkit >= 0.97
@@ -40,6 +41,50 @@ power devices attached to the system.
 upower dostarcza demona, API i narzędzia linii poleceń do zarządzania
 urządzeniami energii dołączonymi do systemu.
 
+%package libs
+Summary:	UPower shared library
+Summary(pl.UTF-8):	Biblioteka współdzielona UPower
+Group:		Libraries
+Requires:	dbus-glib >= 0.76
+Requires:	dbus-libs >= 1.0.0
+Requires:	glib2 >= 1:2.22.0
+Conflicts:	upower < 0.9.18
+
+%description libs
+UPower shared library.
+
+%description libs -l pl.UTF-8
+Biblioteka współdzielona UPower.
+
+%package devel
+Summary:	Header files for UPower library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
+Group:		Development/Libraries
+Requires:	%{name}-libs = %{version}-%{release}
+Requires:	dbus-devel >= 1.0.0
+Requires:	dbus-glib-devel >= 0.76
+Requires:	glib2-devel >= 1:2.22.0
+Obsoletes:	DeviceKit-power-devel
+Obsoletes:	UPower-devel
+
+%description devel
+Header files for UPower library.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki UPower.
+
+%package static
+Summary:	Static UPower library
+Summary(pl.UTF-8):	Statyczna biblioteka UPower
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static UPower library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka UPower.
+
 %package apidocs
 Summary:	UPower API documentation
 Summary(pl.UTF-8):	Dokumentacja API UPower
@@ -54,22 +99,6 @@ UPower API documentation.
 %description apidocs -l pl.UTF-8
 Dokumentacja API UPower.
 
-%package devel
-Summary:	Header files for UPower library
-Summary(pl.UTF-8):	Nagłówki biblioteki UPower
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	dbus-devel >= 1.0.0
-Requires:	glib2-devel >= 1:2.22.0
-Obsoletes:	DeviceKit-power-devel
-Obsoletes:	UPower-devel
-
-%description devel
-Header files for UPower library.
-
-%description devel -l pl.UTF-8
-Nagłówki biblioteki UPower.
-
 %prep
 %setup -q
 
@@ -83,7 +112,6 @@ Nagłówki biblioteki UPower.
 %{__automake}
 %configure \
 	--disable-silent-rules \
-	--disable-static \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir} \
 	--with-systemdsystemunitdir=%{systemdunitdir}
@@ -101,17 +129,14 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files -f upower.lang
 %defattr(644,root,root,755)
 %doc AUTHORS HACKING NEWS README
 %attr(755,root,root) %{_bindir}/upower
 %attr(755,root,root) %{_libdir}/upowerd
-%attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
-%{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.UPower.conf
 %dir %{_sysconfdir}/UPower
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/UPower/UPower.conf
@@ -119,6 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.qos.policy
 %{systemdunitdir}/upower.service
+%attr(755,root,root) /lib/systemd/system-sleep/notify-upower.sh
 /lib/udev/rules.d/95-upower-battery-recall-dell.rules
 /lib/udev/rules.d/95-upower-battery-recall-fujitsu.rules
 /lib/udev/rules.d/95-upower-battery-recall-gateway.rules
@@ -133,9 +159,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/upowerd.8*
 %dir /var/lib/upower
 
-%files apidocs
+%files libs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/UPower
+%attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
+%{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -149,3 +177,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gir-1.0/UPowerGlib-1.0.gir
 %{_includedir}/libupower-glib
 %{_pkgconfigdir}/upower-glib.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libupower-glib.a
+
+%files apidocs
+%defattr(644,root,root,755)
+%{_gtkdocdir}/UPower
