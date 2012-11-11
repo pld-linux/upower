@@ -1,13 +1,18 @@
 --- upower-0.9.18/src/linux/up-backend.c.old	2012-07-11 19:11:39.000000000 +0200
 +++ upower-0.9.18/src/linux/up-backend.c	2012-11-11 14:51:43.000000000 +0100
-@@ -603,7 +603,9 @@
+@@ -603,10 +603,11 @@ gboolean
  up_backend_emits_resuming (UpBackend *backend)
  {
  #ifdef HAVE_SYSTEMD
 -	return TRUE;
+-#else
+-	return FALSE;
 +	if (sd_booted ())
 +		return TRUE;
 +	else
- #else
- 	return FALSE;
  #endif
++	return FALSE;
+ }
+ 
+ /**
+
