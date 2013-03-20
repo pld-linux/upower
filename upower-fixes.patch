@@ -1,0 +1,12 @@
+diff -urN upower-0.9.20.org/src/linux/up-device-lg-unifying.c upower-0.9.20/src/linux/up-device-lg-unifying.c
+--- upower-0.9.20.org/src/linux/up-device-lg-unifying.c	2013-03-20 13:42:58.000000000 +0100
++++ upower-0.9.20/src/linux/up-device-lg-unifying.c	2013-03-20 15:45:03.731346809 +0100
+@@ -627,7 +627,7 @@
+ 
+ 	for (entry = hidraw_list; entry; entry = entry->next) {
+ 		hidraw = entry->data;
+-		if (!g_strcmp0 (g_udev_device_get_sysfs_attr (hidraw, "device"),
++		if (!g_strcmp0 (g_udev_device_get_sysfs_path(g_udev_device_get_parent(hidraw)),
+ 				parent_sysfs_path))
+ 			receiver = hidraw;
+ 		else
