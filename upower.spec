@@ -21,10 +21,11 @@ BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libplist-devel >= 0.12
-BuildRequires:	libtool
+BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.0
 BuildRequires:	pkgconfig
 BuildRequires:	polkit-devel >= 0.97
+BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-glib-devel >= 1:147
 BuildRequires:	xz
