@@ -497,3 +497,147 @@ index f6636e6..ea8b0b3 100644
  				    &error);
  	if (!ret) {
  		g_warning ("failed to coldplug unifying device: %s",
+diff --git a/src/linux/hidpp-device.c b/src/linux/hidpp-device.c
+index 5398a38..1ce48b7 100644
+--- a/src/linux/hidpp-device.c
++++ b/src/linux/hidpp-device.c
+@@ -46,7 +46,6 @@
+ /* HID++ 1.0 */
+ #define HIDPP_READ_SHORT_REGISTER				0x81
+ #define HIDPP_READ_SHORT_REGISTER_BATTERY			0x0d
+-#define HIDPP_READ_SHORT_REGISTER_CONNECTION_STATE		0x02
+ 
+ #define HIDPP_READ_LONG_REGISTER				0x83
+ #define HIDPP_READ_LONG_REGISTER_DEVICE_TYPE			11
+@@ -315,11 +314,10 @@ hidpp_device_cmd (HidppDevice	*device,
+ 	    buf[2] == HIDPP_ERR_INVALID_SUBID &&
+ 	    buf[3] == 0x00 &&
+ 	    buf[4] == HIDPP_FEATURE_ROOT_FN_PING) {
+-		if (buf[5] == HIDPP_ERROR_CODE_UNSUPPORTED) {
+-			/* device offline / unreachable */
+-			g_set_error_literal (error, 1, 0,
+-					     "device is unreachable");
+-			ret = FALSE;
++		/* HID++ 1.0 ping reply, so fake success with version 1  */
++		if (priv->version < 2 && (buf[5] == HIDPP_ERROR_CODE_UNKNOWN
++					|| buf[5] == HIDPP_ERROR_CODE_UNSUPPORTED)) {
++			response_data[0] = 1;
+ 			goto out;
+ 		}
+ 	}
+@@ -504,32 +502,12 @@ hidpp_device_refresh (HidppDevice *device,
+ 			ret = FALSE;
+ 			goto out;
+ 		}
+-
+-		/* add features we are going to use */
+-//		hidpp_device_map_add (device,
+-//				      HIDPP_FEATURE_I_FEATURE_SET,
+-//				      "IFeatureSet");
+-//		hidpp_device_map_add (device,
+-//				      HIDPP_FEATURE_I_FIRMWARE_INFO,
+-//				      "IFirmwareInfo");
+-		hidpp_device_map_add (device,
+-				      HIDPP_FEATURE_GET_DEVICE_NAME_TYPE,
+-				      "GetDeviceNameType");
+-		hidpp_device_map_add (device,
+-				      HIDPP_FEATURE_BATTERY_LEVEL_STATUS,
+-				      "BatteryLevelStatus");
+-//		hidpp_device_map_add (device,
+-//				      HIDPP_FEATURE_WIRELESS_DEVICE_STATUS,
+-//				      "WirelessDeviceStatus");
+-		hidpp_device_map_add (device,
+-				      HIDPP_FEATURE_SOLAR_DASHBOARD,
+-				      "SolarDashboard");
+-		hidpp_device_map_print (device);
+ 	}
+ 
+ 	/* get version */
+ 	if ((refresh_flags & HIDPP_REFRESH_FLAGS_VERSION) > 0) {
+-		/* first try v2 packet */
++		guint version_old = priv->version;
++
+ 		buf[0] = 0x00;
+ 		buf[1] = 0x00;
+ 		buf[2] = HIDPP_PING_DATA;
+@@ -540,34 +518,43 @@ hidpp_device_refresh (HidppDevice *device,
+ 					buf, 3,
+ 					buf, 4,
+ 					error);
+-		if (ret)
+-			priv->version = buf[0];
+-		/* then try v1 packet */
+-		else {
+-			/* discard potential v1 error */
+-			g_clear_error (error);
+-
+-			/* checking hid++ v1 packet */
+-			buf[0] = 0x00;
+-			buf[1] = 0x00;
+-			buf[2] = 0x00;
++		if (!ret)
++			goto out;
+ 
+-			ret = hidpp_device_cmd (device,
+-					HIDPP_RECEIVER_ADDRESS,
+-					HIDPP_READ_SHORT_REGISTER,
+-					HIDPP_READ_SHORT_REGISTER_CONNECTION_STATE,
+-					buf, 3,
+-					buf, 2,
+-					error);
++		priv->version = buf[0];
+ 
+-			if (!ret)
+-				goto out;
++		if (version_old != priv->version)
++			g_debug("protocol for hid++ device changed from v%d to v%d",
++					version_old, priv->version);
+ 
+-			priv->version = 1;
+-		}
++		if (version_old < 2 && priv->version >= 2)
++			refresh_flags |= HIDPP_REFRESH_FLAGS_FEATURES;
+ 
+ 	}
+ 
++	if ((refresh_flags & HIDPP_REFRESH_FLAGS_FEATURES) > 0) {
++		/* add features we are going to use */
++//		hidpp_device_map_add (device,
++//				      HIDPP_FEATURE_I_FEATURE_SET,
++//				      "IFeatureSet");
++//		hidpp_device_map_add (device,
++//				      HIDPP_FEATURE_I_FIRMWARE_INFO,
++//				      "IFirmwareInfo");
++		hidpp_device_map_add (device,
++				HIDPP_FEATURE_GET_DEVICE_NAME_TYPE,
++				"GetDeviceNameType");
++		hidpp_device_map_add (device,
++				HIDPP_FEATURE_BATTERY_LEVEL_STATUS,
++				"BatteryLevelStatus");
++//		hidpp_device_map_add (device,
++//				      HIDPP_FEATURE_WIRELESS_DEVICE_STATUS,
++//				      "WirelessDeviceStatus");
++		hidpp_device_map_add (device,
++				HIDPP_FEATURE_SOLAR_DASHBOARD,
++				"SolarDashboard");
++		hidpp_device_map_print (device);
++	}
++
+ 	/* get device kind */
+ 	if ((refresh_flags & HIDPP_REFRESH_FLAGS_KIND) > 0) {
+ 
+diff --git a/src/linux/hidpp-device.h b/src/linux/hidpp-device.h
+index 935cd07..3f249a8 100644
+--- a/src/linux/hidpp-device.h
++++ b/src/linux/hidpp-device.h
+@@ -68,7 +68,8 @@ typedef enum {
+ 	HIDPP_REFRESH_FLAGS_VERSION	= 1,
+ 	HIDPP_REFRESH_FLAGS_KIND	= 2,
+ 	HIDPP_REFRESH_FLAGS_BATTERY	= 4,
+-	HIDPP_REFRESH_FLAGS_MODEL	= 8
++	HIDPP_REFRESH_FLAGS_MODEL	= 8,
++	HIDPP_REFRESH_FLAGS_FEATURES	= 16
+ } HidppRefreshFlags;
+ 
+ GType			 hidpp_device_get_type			(void);
+

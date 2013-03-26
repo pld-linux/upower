@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.9.20
-Release:	4
+Release:	5
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
@@ -142,9 +142,6 @@ rm -rf $RPM_BUILD_ROOT
 %systemd_post upower.service
 
 %preun
-if [ "$1" = "0" ]; then
-        %service upower stop
-fi
 %systemd_preun upower.service
 
 %postun
