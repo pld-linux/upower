@@ -31,6 +31,8 @@ BuildRequires:	udev-glib-devel >= 1:147
 BuildRequires:	xz
 Requires:	pm-utils
 Requires:	polkit >= 0.97
+Requires(post,preun,postun):	systemd-units >= 38
+Requires:	systemd-units >= 38
 Obsoletes:	DeviceKit-power < 0.15
 Obsoletes:	UPower < 0.9.8-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -135,6 +137,18 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
+
+%post
+%systemd_post upower.service
+
+%preun
+if [ "$1" = "0" ]; then
+        %service upower stop
+fi
+%systemd_preun upower.service
+
+%postun
+%systemd_reload
 
 %files -f upower.lang
 %defattr(644,root,root,755)
