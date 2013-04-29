@@ -692,3 +692,24 @@ index b476660..ffd55b2 100644
 +ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c52e", ENV{UPOWER_BATTERY_TYPE}="lg-wireless"
  ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c52f", ENV{UPOWER_BATTERY_TYPE}="lg-wireless"
  LABEL="up_unifying_end"
+commit 181e7fa573bf6ba442ffd29d845c8fd10b62b3fe
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Wed Apr 24 08:04:31 2013 +0100
+
+    Allow clients to call org.freedesktop.DBus.Peer
+    
+    This fixes Ping() and GetMachineId() which is needed by systemd.
+
+diff --git a/src/org.freedesktop.UPower.conf.in b/src/org.freedesktop.UPower.conf.in
+index a15ce93..fc2b604 100644
+--- a/src/org.freedesktop.UPower.conf.in
++++ b/src/org.freedesktop.UPower.conf.in
+@@ -14,6 +14,8 @@
+            send_interface="org.freedesktop.DBus.Introspectable"/>
+ 
+     <allow send_destination="org.freedesktop.UPower"
++           send_interface="org.freedesktop.DBus.Peer"/>
++    <allow send_destination="org.freedesktop.UPower"
+            send_interface="org.freedesktop.DBus.Properties"/>
+     <allow send_destination="org.freedesktop.UPower.Device"
+            send_interface="org.freedesktop.DBus.Properties"/>
