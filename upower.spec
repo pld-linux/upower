@@ -1,13 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.9.20
-Release:	7
+Version:	0.9.21
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	f175984d142dc8d2353a7da609836b69
-Patch0:		%{name}-fixes.patch
+# Source0-md5:	1aa2b9e6fd757cd151bbaa4991eacc18
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -29,10 +28,13 @@ BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-glib-devel >= 1:147
 BuildRequires:	xz
+Requires(post,preun,postun):	systemd-units >= 38
+Requires:	libimobiledevice >= 0.9.7
+Requires:	libplist >= 0.12
 Requires:	pm-utils
 Requires:	polkit >= 0.97
-Requires(post,preun,postun):	systemd-units >= 38
 Requires:	systemd-units >= 38
+Requires:	udev-glib >= 1:147
 Obsoletes:	DeviceKit-power < 0.15
 Obsoletes:	UPower < 0.9.8-2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -105,7 +107,6 @@ Dokumentacja API UPower.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -135,9 +136,6 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
-
 %post
 %systemd_post upower.service
 
@@ -146,6 +144,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun
 %systemd_reload
+
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files -f upower.lang
 %defattr(644,root,root,755)
