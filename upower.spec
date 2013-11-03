@@ -2,11 +2,12 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.9.23
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
 # Source0-md5:	39cfd97bfaf7d30908f20cf937a57634
+Patch0:		%{name}-battery_range.patch
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -107,6 +108,7 @@ Dokumentacja API UPower.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__gtkdocize}
