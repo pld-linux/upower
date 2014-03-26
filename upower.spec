@@ -1,13 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.9.23
-Release:	2
+Version:	0.99.0
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	39cfd97bfaf7d30908f20cf937a57634
-Patch0:		%{name}-battery_range.patch
+# Source0-md5:	14f43bc13353e23e7280863f33ac50d2
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -15,7 +14,7 @@ BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel >= 0.17
-BuildRequires:	glib2-devel >= 1:2.22.0
+BuildRequires:	glib2-devel >= 1:2.29.19
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	intltool >= 0.40.0
@@ -54,7 +53,7 @@ Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
 Requires:	dbus-glib >= 0.76
 Requires:	dbus-libs >= 1.0.0
-Requires:	glib2 >= 1:2.22.0
+Requires:	glib2 >= 1:2.29.19
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -70,7 +69,7 @@ Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-devel >= 1.0.0
 Requires:	dbus-glib-devel >= 0.76
-Requires:	glib2-devel >= 1:2.22.0
+Requires:	glib2-devel >= 1:2.29.19
 Obsoletes:	DeviceKit-power-devel
 Obsoletes:	UPower-devel
 
@@ -108,7 +107,6 @@ Dokumentacja API UPower.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -159,16 +157,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/UPower
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/UPower/UPower.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
-%{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
-%{_datadir}/polkit-1/actions/org.freedesktop.upower.qos.policy
 %{systemdunitdir}/upower.service
-%attr(755,root,root) /lib/systemd/system-sleep/notify-upower.sh
-/lib/udev/rules.d/95-upower-battery-recall-dell.rules
-/lib/udev/rules.d/95-upower-battery-recall-fujitsu.rules
-/lib/udev/rules.d/95-upower-battery-recall-gateway.rules
-/lib/udev/rules.d/95-upower-battery-recall-ibm.rules
-/lib/udev/rules.d/95-upower-battery-recall-lenovo.rules
-/lib/udev/rules.d/95-upower-battery-recall-toshiba.rules
 /lib/udev/rules.d/95-upower-csr.rules
 /lib/udev/rules.d/95-upower-hid.rules
 /lib/udev/rules.d/95-upower-wup.rules
@@ -180,7 +169,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.1
+%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.2
 %{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
 
 %files devel
@@ -189,7 +178,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libupower-glib.la
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml
-%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.QoS.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Wakeups.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.xml
 %{_datadir}/gir-1.0/UPowerGlib-1.0.gir
