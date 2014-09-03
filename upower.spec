@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.0
+Version:	0.99.1
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	14f43bc13353e23e7280863f33ac50d2
+# Source0-md5:	e21ea7875e46142e37695850754a296a
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -23,7 +23,6 @@ BuildRequires:	libplist-devel >= 0.12
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.0
 BuildRequires:	pkgconfig
-BuildRequires:	polkit-devel >= 0.97
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	udev-glib-devel >= 1:147
@@ -32,7 +31,6 @@ Requires(post,preun,postun):	systemd-units >= 38
 Requires:	libimobiledevice >= 0.9.7
 Requires:	libplist >= 0.12
 Requires:	pm-utils
-Requires:	polkit >= 0.97
 Requires:	systemd-units >= 38
 Requires:	udev-glib >= 1:147
 Obsoletes:	DeviceKit-power < 0.15
@@ -169,7 +167,7 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.2
+%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.3
 %{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
 
 %files devel
