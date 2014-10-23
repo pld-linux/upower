@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.99.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
@@ -35,6 +35,7 @@ Requires:	systemd-units >= 38
 Requires:	udev-glib >= 1:147
 Obsoletes:	DeviceKit-power < 0.15
 Obsoletes:	UPower < 0.9.8-2
+Obsoletes:	upower-pm-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -52,6 +53,7 @@ Group:		Libraries
 Requires:	dbus-glib >= 0.76
 Requires:	dbus-libs >= 1.0.0
 Requires:	glib2 >= 1:2.29.19
+Obsoletes:	upower-pm-utils-libs
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -70,6 +72,7 @@ Requires:	dbus-glib-devel >= 0.76
 Requires:	glib2-devel >= 1:2.29.19
 Obsoletes:	DeviceKit-power-devel
 Obsoletes:	UPower-devel
+Obsoletes:	upower-pm-utils-devel
 
 %description devel
 Header files for UPower library.
@@ -82,6 +85,7 @@ Summary:	Static UPower library
 Summary(pl.UTF-8):	Statyczna biblioteka UPower
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
+Obsoletes:	upower-pm-utils-static
 
 %description static
 Static UPower library.
@@ -96,6 +100,7 @@ Group:		Documentation
 Requires:	gtk-doc-common
 Obsoletes:	DeviceKit-power-apidocs
 Obsoletes:	UPower-apidocs
+Obsoletes:	upower-pm-utils-apidocs
 
 %description apidocs
 UPower API documentation.
