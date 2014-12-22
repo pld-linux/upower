@@ -1,12 +1,12 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.1
-Release:	2
+Version:	0.99.2
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	e21ea7875e46142e37695850754a296a
+# Source0-md5:	93119fcb617a75ff9cd44999179ec217
 URL:		http://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -14,7 +14,7 @@ BuildRequires:	dbus-devel >= 1.0.0
 BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel >= 0.17
-BuildRequires:	glib2-devel >= 1:2.29.19
+BuildRequires:	glib2-devel >= 1:2.34
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	intltool >= 0.40.0
@@ -52,7 +52,7 @@ Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
 Requires:	dbus-glib >= 0.76
 Requires:	dbus-libs >= 1.0.0
-Requires:	glib2 >= 1:2.29.19
+Requires:	glib2 >= 1:2.34
 Obsoletes:	upower-pm-utils-libs
 Conflicts:	upower < 0.9.18
 
@@ -69,7 +69,7 @@ Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	dbus-devel >= 1.0.0
 Requires:	dbus-glib-devel >= 0.76
-Requires:	glib2-devel >= 1:2.29.19
+Requires:	glib2-devel >= 1:2.34
 Obsoletes:	DeviceKit-power-devel
 Obsoletes:	UPower-devel
 Obsoletes:	upower-pm-utils-devel
