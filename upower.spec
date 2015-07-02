@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.99.3
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
@@ -101,6 +101,9 @@ Requires:	gtk-doc-common
 Obsoletes:	DeviceKit-power-apidocs
 Obsoletes:	UPower-apidocs
 Obsoletes:	upower-pm-utils-apidocs
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 UPower API documentation.
