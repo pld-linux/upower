@@ -53,7 +53,6 @@ Group:		Libraries
 Requires:	dbus-glib >= 0.76
 Requires:	dbus-libs >= 1.0.0
 Requires:	glib2 >= 1:2.34
-Obsoletes:	upower-pm-utils-libs
 Conflicts:	upower < 0.9.18
 
 %description libs
