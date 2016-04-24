@@ -1,20 +1,18 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.3
-Release:	4
+Version:	0.99.4
+Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	a9c95d0545bc23d784642c11e157cfbf
-URL:		http://upower.freedesktop.org/
+Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
+# Source0-md5:	78800e1ac7f92b24aabdf433e38f75d2
+URL:		https://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
-BuildRequires:	dbus-devel >= 1.0.0
-BuildRequires:	dbus-glib-devel >= 0.76
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.34
+BuildRequires:	glib2-devel >= 1:2.34.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	intltool >= 0.40.0
@@ -50,9 +48,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	dbus-glib >= 0.76
-Requires:	dbus-libs >= 1.0.0
-Requires:	glib2 >= 1:2.34
+Requires:	glib2 >= 1:2.34.0
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -66,9 +62,7 @@ Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	dbus-devel >= 1.0.0
-Requires:	dbus-glib-devel >= 0.76
-Requires:	glib2-devel >= 1:2.34
+Requires:	glib2-devel >= 1:2.34.0
 Obsoletes:	DeviceKit-power-devel
 Obsoletes:	UPower-devel
 Obsoletes:	upower-pm-utils-devel
