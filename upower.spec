@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.99.7
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
@@ -150,7 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS HACKING NEWS README
 %attr(755,root,root) %{_bindir}/upower
-%attr(755,root,root) %{_libdir}/upowerd
+%attr(755,root,root) %{_libexecdir}/upowerd
 %config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.UPower.conf
 %dir %{_sysconfdir}/UPower
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/UPower/UPower.conf
