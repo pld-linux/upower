@@ -5,7 +5,9 @@ Version:	0.99.8
 Release:	2
 License:	GPL v2+
 Group:		Libraries
+# releases <= 0.99.7
 # Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
+#Source0Download: https://gitlab.freedesktop.org/upower/upower/tags
 Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/9125ab7ee96fdc4ecc68cfefb50c1cab/%{name}-%{version}.tar.xz
 # Source0-md5:	eeb56bd91d2fb8a64c81eff6d899926b
 # https://gitlab.freedesktop.org/upower/upower/issues/68
