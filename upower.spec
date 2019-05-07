@@ -1,16 +1,16 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.9
-Release:	2
+Version:	0.99.10
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 # releases <= 0.99.7
 # Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
+# since 0.99.8
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/tags
-Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/2282c7c0e53fb31816b824c9d1f547e8/%{name}-%{version}.tar.xz
-# Source0-md5:	3b2f729ab05afa5df70d0c387194c9fc
-# https://gitlab.freedesktop.org/upower/upower/issues/68
+Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/c438511024b9bc5a904f8775cfc8e4c4/%{name}-%{version}.tar.xz
+# Source0-md5:	ac6b6bee31110fd8478a8e881c40fba6
 URL:		https://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -133,6 +133,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libupower-glib.la
+
 %find_lang upower
 
 %clean
@@ -177,7 +180,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libupower-glib.so
-%{_libdir}/libupower-glib.la
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Wakeups.xml
