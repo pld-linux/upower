@@ -1,7 +1,7 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.10
+Version:	0.99.11
 Release:	1
 License:	GPL v2+
 Group:		Libraries
@@ -9,17 +9,16 @@ Group:		Libraries
 # Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
 # since 0.99.8
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/tags
-Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/c438511024b9bc5a904f8775cfc8e4c4/%{name}-%{version}.tar.xz
-# Source0-md5:	ac6b6bee31110fd8478a8e881c40fba6
+Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/93cfe7c8d66ed486001c4f3f55399b7a/%{name}-%{version}.tar.xz
+# Source0-md5:	abe6acb617f11f2e8dbd9846fcf86e24
 URL:		https://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	gettext-tools >= 0.17
-BuildRequires:	glib2-devel >= 1:2.34.0
+BuildRequires:	gettext-tools >= 0.19.8
+BuildRequires:	glib2-devel >= 1:2.38.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
-BuildRequires:	intltool >= 0.40.0
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libplist-devel >= 0.12
 BuildRequires:	libtool >= 2:2
@@ -51,7 +50,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	glib2 >= 1:2.34.0
+Requires:	glib2 >= 1:2.38.0
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -65,7 +64,7 @@ Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.34.0
+Requires:	glib2-devel >= 1:2.38.0
 Obsoletes:	DeviceKit-power-devel
 Obsoletes:	UPower-devel
 Obsoletes:	upower-pm-utils-devel
@@ -112,7 +111,6 @@ Dokumentacja API UPower.
 
 %build
 %{__gtkdocize}
-%{__intltoolize}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -158,13 +156,14 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS HACKING NEWS README
 %attr(755,root,root) %{_bindir}/upower
 %attr(755,root,root) %{_libexecdir}/upowerd
-%config(noreplace) %verify(not md5 mtime size) /etc/dbus-1/system.d/org.freedesktop.UPower.conf
 %dir %{_sysconfdir}/UPower
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/UPower/UPower.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
+%{_datadir}/dbus-1/system.d/org.freedesktop.UPower.conf
 %{systemdunitdir}/upower.service
 /lib/udev/rules.d/95-upower-csr.rules
 /lib/udev/rules.d/95-upower-hid.rules
+/lib/udev/rules.d/95-upower-hidpp.rules
 /lib/udev/rules.d/95-upower-wup.rules
 %{_mandir}/man1/upower.1*
 %{_mandir}/man7/UPower.7*
