@@ -2,7 +2,7 @@ Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
 Version:	0.99.11
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 # releases <= 0.99.7
@@ -11,6 +11,7 @@ Group:		Libraries
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/tags
 Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/93cfe7c8d66ed486001c4f3f55399b7a/%{name}-%{version}.tar.xz
 # Source0-md5:	abe6acb617f11f2e8dbd9846fcf86e24
+Patch0:		%{name}-libplist.patch
 URL:		https://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -20,7 +21,7 @@ BuildRequires:	glib2-devel >= 1:2.38.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	libimobiledevice-devel >= 0.9.7
-BuildRequires:	libplist-devel >= 0.12
+BuildRequires:	libplist-devel >= 2.2.0
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.0
 BuildRequires:	pkgconfig
@@ -30,7 +31,7 @@ BuildRequires:	udev-glib-devel >= 1:147
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	libimobiledevice >= 0.9.7
-Requires:	libplist >= 0.12
+Requires:	libplist >= 2.2.0
 Requires:	systemd-units >= 38
 Requires:	udev-glib >= 1:147
 Obsoletes:	DeviceKit-power < 0.15
@@ -96,7 +97,7 @@ Requires:	gtk-doc-common
 Obsoletes:	DeviceKit-power-apidocs
 Obsoletes:	UPower-apidocs
 Obsoletes:	upower-pm-utils-apidocs
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -108,6 +109,7 @@ Dokumentacja API UPower.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__gtkdocize}
