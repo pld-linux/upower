@@ -1,17 +1,16 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.11
-Release:	2
+Version:	0.99.13
+Release:	1
 License:	GPL v2+
 Group:		Libraries
 # releases <= 0.99.7
 # Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
 # since 0.99.8
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/tags
-Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/93cfe7c8d66ed486001c4f3f55399b7a/%{name}-%{version}.tar.xz
-# Source0-md5:	abe6acb617f11f2e8dbd9846fcf86e24
-Patch0:		%{name}-libplist.patch
+Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/177df5b9f9b76f25a2ad9da41aa0c1fa/%{name}-%{version}.tar.xz
+# Source0-md5:	0c945817c12a7967d2c5edf7138fcf80
 URL:		https://upower.freedesktop.org/
 BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.11
@@ -20,23 +19,24 @@ BuildRequires:	gettext-tools >= 0.19.8
 BuildRequires:	glib2-devel >= 1:2.38.0
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
+BuildRequires:	libgudev-devel >= 235
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libplist-devel >= 2.2.0
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.0
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	systemd-devel
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	udev-glib-devel >= 1:147
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
+Requires:	libgudev >= 235
 Requires:	libimobiledevice >= 0.9.7
 Requires:	libplist >= 2.2.0
 Requires:	systemd-units >= 38
-Requires:	udev-glib >= 1:147
-Obsoletes:	DeviceKit-power < 0.15
+Obsoletes:	DeviceKit-power < 015
 Obsoletes:	UPower < 0.9.8-2
-Obsoletes:	upower-pm-utils
+Obsoletes:	upower-pm-utils < 1:0.99
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -66,9 +66,9 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	glib2-devel >= 1:2.38.0
-Obsoletes:	DeviceKit-power-devel
-Obsoletes:	UPower-devel
-Obsoletes:	upower-pm-utils-devel
+Obsoletes:	DeviceKit-power-devel < 015
+Obsoletes:	UPower-devel < 0.9.8-2
+Obsoletes:	upower-pm-utils-devel < 1:0.99
 
 %description devel
 Header files for UPower library.
@@ -81,7 +81,7 @@ Summary:	Static UPower library
 Summary(pl.UTF-8):	Statyczna biblioteka UPower
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-Obsoletes:	upower-pm-utils-static
+Obsoletes:	upower-pm-utils-static < 1:0.99
 
 %description static
 Static UPower library.
@@ -94,9 +94,9 @@ Summary:	UPower API documentation
 Summary(pl.UTF-8):	Dokumentacja API UPower
 Group:		Documentation
 Requires:	gtk-doc-common
-Obsoletes:	DeviceKit-power-apidocs
-Obsoletes:	UPower-apidocs
-Obsoletes:	upower-pm-utils-apidocs
+Obsoletes:	DeviceKit-power-apidocs < 015
+Obsoletes:	UPower-apidocs < 0.9.8-2
+Obsoletes:	upower-pm-utils-apidocs < 1:0.99
 BuildArch:	noarch
 
 %description apidocs
@@ -107,7 +107,6 @@ Dokumentacja API UPower.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -161,9 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
 %{_datadir}/dbus-1/system.d/org.freedesktop.UPower.conf
 %{systemdunitdir}/upower.service
-/lib/udev/rules.d/95-upower-csr.rules
 /lib/udev/rules.d/95-upower-hid.rules
-/lib/udev/rules.d/95-upower-hidpp.rules
 /lib/udev/rules.d/95-upower-wup.rules
 %{_mandir}/man1/upower.1*
 %{_mandir}/man7/UPower.7*
