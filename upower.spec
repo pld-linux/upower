@@ -1,34 +1,35 @@
+#
+# Conditional build:
+%bcond_without	apidocs		# API documentation
+%bcond_without	static_libs	# static library
+
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.13
+Version:	0.99.17
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-# releases <= 0.99.7
-# Source0:	https://upower.freedesktop.org/releases/%{name}-%{version}.tar.xz
-# since 0.99.8
-#Source0Download: https://gitlab.freedesktop.org/upower/upower/tags
-Source0:	https://gitlab.freedesktop.org/upower/upower/uploads/177df5b9f9b76f25a2ad9da41aa0c1fa/%{name}-%{version}.tar.xz
-# Source0-md5:	0c945817c12a7967d2c5edf7138fcf80
+#Source0Download: https://gitlab.freedesktop.org/upower/upower/-/tags
+Source0:	https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/%{name}-%{version}.tar.bz2
+# Source0-md5:	3efe84a17e067aa03cbdac6264692397
 URL:		https://upower.freedesktop.org/
-BuildRequires:	autoconf >= 2.65
-BuildRequires:	automake >= 1:1.11
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.19.8
-BuildRequires:	glib2-devel >= 1:2.38.0
+BuildRequires:	glib2-devel >= 1:2.56
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	libgudev-devel >= 235
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libplist-devel >= 2.2.0
-BuildRequires:	libtool >= 2:2
-BuildRequires:	libusb-devel >= 1.0.0
+BuildRequires:	libxslt-progs
+BuildRequires:	meson >= 0.49.0
+BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-build >= 4.6
+BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	sed >= 4.0
 BuildRequires:	systemd-devel
-BuildRequires:	tar >= 1:1.22
-BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
 Requires:	libgudev >= 235
 Requires:	libimobiledevice >= 0.9.7
@@ -51,7 +52,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	glib2 >= 1:2.38.0
+Requires:	glib2 >= 1:2.56
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -65,7 +66,7 @@ Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.38.0
+Requires:	glib2-devel >= 1:2.56
 Obsoletes:	DeviceKit-power-devel < 015
 Obsoletes:	UPower-devel < 0.9.8-2
 Obsoletes:	upower-pm-utils-devel < 1:0.99
@@ -106,32 +107,24 @@ UPower API documentation.
 Dokumentacja API UPower.
 
 %prep
-%setup -q
+%setup -q -n %{name}-v%{version}-c889154ec8e3e2239db9260d48b2e198d72ba002
+
+%if %{with static_libs}
+%{__sed} -i -e '/^libupower_glib = / s/shared_library/library/' libupower-glib/meson.build
+%endif
 
 %build
-%{__gtkdocize}
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules \
-	--enable-deprecated \
-	--enable-gtk-doc \
-	--with-html-dir=%{_gtkdocdir} \
-	--with-systemdsystemunitdir=%{systemdunitdir}
+%meson build \
+	%{!?with_apidocs:-Dgtk-doc=false} \
+	-Dsystemdsystemunitdir=%{systemdunitdir} \
+	-Dudevrulesdir=/lib/udev/rules.d
 
-%{__make}
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libupower-glib.la
+%ninja_install -C build
 
 %find_lang upower
 
@@ -184,10 +177,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libupower-glib
 %{_pkgconfigdir}/upower-glib.pc
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libupower-glib.a
+%endif
 
+%if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/UPower
+%endif
