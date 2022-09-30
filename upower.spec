@@ -6,24 +6,24 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.17
+Version:	0.99.20
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/-/tags
 Source0:	https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	3efe84a17e067aa03cbdac6264692397
+# Source0-md5:	7e71c4364c78bebb0cfbad509cc02a55
 URL:		https://upower.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.19.8
-BuildRequires:	glib2-devel >= 1:2.56
+BuildRequires:	glib2-devel >= 1:2.58
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	libgudev-devel >= 235
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libplist-devel >= 2.2.0
 BuildRequires:	libxslt-progs
-BuildRequires:	meson >= 0.49.0
+BuildRequires:	meson >= 0.56.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-build >= 4.6
@@ -52,7 +52,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	glib2 >= 1:2.56
+Requires:	glib2 >= 1:2.58
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -66,7 +66,7 @@ Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.56
+Requires:	glib2-devel >= 1:2.58
 Obsoletes:	DeviceKit-power-devel < 015
 Obsoletes:	UPower-devel < 0.9.8-2
 Obsoletes:	upower-pm-utils-devel < 1:0.99
@@ -107,7 +107,7 @@ UPower API documentation.
 Dokumentacja API UPower.
 
 %prep
-%setup -q -n %{name}-v%{version}-c889154ec8e3e2239db9260d48b2e198d72ba002
+%setup -q -n %{name}-v%{version}-3f2eabb4d1f82bb8ca4ee357e5232cb4237fdc90
 
 %if %{with static_libs}
 %{__sed} -i -e '/^libupower_glib = / s/shared_library/library/' libupower-glib/meson.build
@@ -153,6 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
 %{_datadir}/dbus-1/system.d/org.freedesktop.UPower.conf
 %{systemdunitdir}/upower.service
+/lib/udev/hwdb.d/95-upower-hid.hwdb
 /lib/udev/rules.d/95-upower-hid.rules
 /lib/udev/rules.d/95-upower-wup.rules
 %{_mandir}/man1/upower.1*
@@ -171,7 +172,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libupower-glib.so
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml
-%{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Wakeups.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.xml
 %{_datadir}/gir-1.0/UPowerGlib-1.0.gir
 %{_includedir}/libupower-glib
