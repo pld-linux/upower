@@ -6,32 +6,33 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	0.99.20
+Version:	1.90.9
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/-/tags
-Source0:	https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	7e71c4364c78bebb0cfbad509cc02a55
+Source0:	https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
+# Source0-md5:	22d4f58fb54c225de7e6a7047420bb3f
 URL:		https://upower.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.19.8
-BuildRequires:	glib2-devel >= 1:2.58
+BuildRequires:	glib2-devel >= 1:2.66
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
-BuildRequires:	libgudev-devel >= 235
+BuildRequires:	libgudev-devel >= 238
 BuildRequires:	libimobiledevice-devel >= 0.9.7
 BuildRequires:	libplist-devel >= 2.2.0
 BuildRequires:	libxslt-progs
-BuildRequires:	meson >= 0.56.0
+BuildRequires:	meson >= 0.60.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
+BuildRequires:	polkit-devel >= 0.114
 BuildRequires:	rpm-build >= 4.6
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sed >= 4.0
 BuildRequires:	systemd-devel
 Requires(post,preun,postun):	systemd-units >= 38
-Requires:	libgudev >= 235
+Requires:	libgudev >= 238
 Requires:	libimobiledevice >= 0.9.7
 Requires:	libplist >= 2.2.0
 Requires:	systemd-units >= 38
@@ -52,7 +53,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	glib2 >= 1:2.58
+Requires:	glib2 >= 1:2.66
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -66,7 +67,7 @@ Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.58
+Requires:	glib2-devel >= 1:2.66
 Obsoletes:	DeviceKit-power-devel < 015
 Obsoletes:	UPower-devel < 0.9.8-2
 Obsoletes:	upower-pm-utils-devel < 1:0.99
@@ -107,24 +108,32 @@ UPower API documentation.
 Dokumentacja API UPower.
 
 %prep
-%setup -q -n %{name}-v%{version}-3f2eabb4d1f82bb8ca4ee357e5232cb4237fdc90
+%setup -q -n %{name}-v%{version}
 
 %if %{with static_libs}
 %{__sed} -i -e '/^libupower_glib = / s/shared_library/library/' libupower-glib/meson.build
 %endif
 
 %build
-%meson build \
+%meson \
 	%{!?with_apidocs:-Dgtk-doc=false} \
+	-Didevice=enabled \
+	-Dintrospection=enabled \
+	-Dpolkit=enabled \
 	-Dsystemdsystemunitdir=%{systemdunitdir} \
 	-Dudevrulesdir=/lib/udev/rules.d
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%ninja_install -C build
+%meson_install
+
+# tests
+%{__rm} $RPM_BUILD_ROOT%{_libexecdir}/upower/{integration-test,output_checker}.py
+%{__rm} -r $RPM_BUILD_ROOT%{_libexecdir}/upower/tests
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/installed-tests/upower
 
 %find_lang upower
 
@@ -145,17 +154,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f upower.lang
 %defattr(644,root,root,755)
-%doc AUTHORS HACKING NEWS README
+%doc AUTHORS COMMITMENT NEWS README.md
 %attr(755,root,root) %{_bindir}/upower
 %attr(755,root,root) %{_libexecdir}/upowerd
 %dir %{_sysconfdir}/UPower
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/UPower/UPower.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
 %{_datadir}/dbus-1/system.d/org.freedesktop.UPower.conf
+%{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
 %{systemdunitdir}/upower.service
+/lib/udev/hwdb.d/60-upower-battery.hwdb
 /lib/udev/hwdb.d/95-upower-hid.hwdb
+/lib/udev/rules.d/60-upower-battery.rules
 /lib/udev/rules.d/95-upower-hid.rules
 /lib/udev/rules.d/95-upower-wup.rules
+%{zsh_compdir}/_upower
 %{_mandir}/man1/upower.1*
 %{_mandir}/man7/UPower.7*
 %{_mandir}/man8/upowerd.8*
