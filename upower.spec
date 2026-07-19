@@ -6,17 +6,17 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	1.90.9
+Version:	1.91.3
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/-/tags
 Source0:	https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
-# Source0-md5:	22d4f58fb54c225de7e6a7047420bb3f
+# Source0-md5:	bf09da2eb695224e249e38077460414c
 URL:		https://upower.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.19.8
-BuildRequires:	glib2-devel >= 1:2.66
+BuildRequires:	glib2-devel >= 1:2.76
 BuildRequires:	gobject-introspection-devel >= 0.10.0
 BuildRequires:	gtk-doc >= 1.11
 BuildRequires:	libgudev-devel >= 238
@@ -53,7 +53,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	glib2 >= 1:2.66
+Requires:	glib2 >= 1:2.76
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -67,7 +67,7 @@ Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.66
+Requires:	glib2-devel >= 1:2.76
 Obsoletes:	DeviceKit-power-devel < 015
 Obsoletes:	UPower-devel < 0.9.8-2
 Obsoletes:	upower-pm-utils-devel < 1:0.99
@@ -162,6 +162,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system-services/org.freedesktop.UPower.service
 %{_datadir}/dbus-1/system.d/org.freedesktop.UPower.conf
 %{_datadir}/polkit-1/actions/org.freedesktop.upower.policy
+%{_datadir}/polkit-1/rules.d/org.freedesktop.upower.rules
 %{systemdunitdir}/upower.service
 /lib/udev/hwdb.d/60-upower-battery.hwdb
 /lib/udev/hwdb.d/95-upower-hid.hwdb
@@ -176,13 +177,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libupower-glib.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libupower-glib.so.3
+%{_libdir}/libupower-glib.so.*.*.*
+%ghost %{_libdir}/libupower-glib.so.3
 %{_libdir}/girepository-1.0/UPowerGlib-1.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libupower-glib.so
+%{_libdir}/libupower-glib.so
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.Device.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.KbdBacklight.xml
 %{_datadir}/dbus-1/interfaces/org.freedesktop.UPower.xml
