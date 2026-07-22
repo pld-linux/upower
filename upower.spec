@@ -32,10 +32,10 @@ BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sed >= 4.0
 BuildRequires:	systemd-devel
 Requires(post,preun,postun):	systemd-units >= 38
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	libgudev >= 238
-Requires:	libimobiledevice >= 0.9.7
-Requires:	libplist >= 2.2.0
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
+Requires:	libgudev%{?_isa} >= 238
+Requires:	libimobiledevice%{?_isa} >= 0.9.7
+Requires:	libplist%{?_isa} >= 2.2.0
 Requires:	systemd-units >= 38
 Obsoletes:	DeviceKit-power < 015
 Obsoletes:	UPower < 0.9.8-2
@@ -54,7 +54,7 @@ urządzeniami energii dołączonymi do systemu.
 Summary:	UPower shared library
 Summary(pl.UTF-8):	Biblioteka współdzielona UPower
 Group:		Libraries
-Requires:	glib2 >= 1:2.76
+Requires:	glib2%{?_isa} >= 1:2.76
 Conflicts:	upower < 0.9.18
 
 %description libs
@@ -67,8 +67,8 @@ Biblioteka współdzielona UPower.
 Summary:	Header files for UPower library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki UPower
 Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.76
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
+Requires:	glib2-devel%{?_isa} >= 1:2.76
 Obsoletes:	DeviceKit-power-devel < 015
 Obsoletes:	UPower-devel < 0.9.8-2
 Obsoletes:	upower-pm-utils-devel < 1:0.99
@@ -83,7 +83,7 @@ Pliki nagłówkowe biblioteki UPower.
 Summary:	Static UPower library
 Summary(pl.UTF-8):	Statyczna biblioteka UPower
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-devel%{?_isa} = %{version}-%{release}
 Obsoletes:	upower-pm-utils-static < 1:0.99
 
 %description static
