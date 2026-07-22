@@ -32,6 +32,7 @@ BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	sed >= 4.0
 BuildRequires:	systemd-devel
 Requires(post,preun,postun):	systemd-units >= 38
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	libgudev >= 238
 Requires:	libimobiledevice >= 0.9.7
 Requires:	libplist >= 2.2.0
