@@ -6,13 +6,13 @@
 Summary:	Power management service
 Summary(pl.UTF-8):	Usługa zarządzania energią
 Name:		upower
-Version:	1.91.3
+Version:	1.91.4
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://gitlab.freedesktop.org/upower/upower/-/tags
 Source0:	https://gitlab.freedesktop.org/upower/upower/-/archive/v%{version}/%{name}-v%{version}.tar.bz2
-# Source0-md5:	bf09da2eb695224e249e38077460414c
+# Source0-md5:	f73752e85fd194b56c82a95da8e1f8a4
 URL:		https://upower.freedesktop.org/
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools >= 0.19.8
